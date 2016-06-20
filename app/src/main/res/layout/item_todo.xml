@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="15dp">
+
+  <ImageView
+      android:id="@+id/checkImage"
+      android:layout_width="25dp"
+      android:layout_height="25dp"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true"
+      android:layout_centerVertical="true"
+      android:layout_marginRight="20dp"
+      android:src="@drawable/checkmark"/>
+
+  <TextView
+      android:id="@+id/titleText"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_toRightOf="@+id/checkImage"
+      android:textColor="@color/colorPrimaryDark"
+      android:text="Title"
+      android:textAppearance="?android:attr/textAppearanceLarge"
+      android:textStyle="bold"/>
+
+  <TextView
+      android:id="@+id/dateText"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignLeft="@+id/titleText"
+      android:layout_below="@+id/titleText"
+      android:text="June 18, 2016"
+      android:textAppearance="?android:attr/textAppearanceMedium"/>
+</RelativeLayout>

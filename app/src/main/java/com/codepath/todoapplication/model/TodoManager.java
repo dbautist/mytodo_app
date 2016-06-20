@@ -2,8 +2,6 @@ package com.codepath.todoapplication.model;
 
 import com.activeandroid.query.Select;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class TodoManager {
@@ -27,8 +25,11 @@ public class TodoManager {
     getItemList();
   }
 
+  /**
+   * Return the list of to-dos sorted by date
+   */
   private void getItemList() {
-    mItemList = new Select().from(TodoItem.class).execute();
+    mItemList = new Select().from(TodoItem.class).orderBy("DateInMilliseconds").execute();
   }
 
   public List<TodoItem> getItems() {
@@ -38,23 +39,17 @@ public class TodoManager {
     return mItemList;
   }
 
-  public boolean addItem(TodoItem item) {
+  public void updateItem(TodoItem item) {
     if (item != null) {
       item.save();
       getItemList();
-      return true;
-    } else {
-      return false;
     }
   }
 
-  public boolean removeItem(TodoItem item) {
+  public void removeItem(TodoItem item) {
     if (item != null) {
       item.delete();
       getItemList();
-      return true;
-    } else {
-      return false;
     }
   }
 

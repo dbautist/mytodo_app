@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.codepath.todoapplication.R;
+import com.codepath.todoapplication.fragment.AlertDialogFragment;
 import com.codepath.todoapplication.fragment.DateChooserDialogFragment;
 import com.codepath.todoapplication.model.TodoItem;
 import com.codepath.todoapplication.model.TodoManager;
@@ -33,9 +34,6 @@ public class TodoInputActivity extends AppCompatActivity implements DateChooserD
 
     titleText = (EditText) findViewById(R.id.titleText);
     dateText = (TextView) findViewById(R.id.dateText);
-    // Default to today's date
-    setDateText(TDUtil.getCurrentDateInMillis());
-
     notesText = (EditText) findViewById(R.id.notesText);
     priorityText = (Spinner) findViewById(R.id.priorityText);
     mPriorityAdapter = ArrayAdapter.createFromResource(this, R.array.priority_array, android.R.layout.simple_spinner_item);
@@ -50,7 +48,12 @@ public class TodoInputActivity extends AppCompatActivity implements DateChooserD
     mItem = TodoManager.getInstance().getSelectedItem();
     if (mItem != null) {
       populateItem();
+    } else {
+      mItem = new TodoItem();
     }
+
+    // init date text
+    setDateText(TDUtil.getCurrentDateInMillis());
   }
 
   @Override
@@ -77,7 +80,7 @@ public class TodoInputActivity extends AppCompatActivity implements DateChooserD
 
   private void populateItem() {
     titleText.setText(mItem.title);
-    dateText.setText(TDUtil.convertMillisToDate(mItem.dateInMilliseconds));
+    dateText.setText(TDUtil.convertMillisToDateString(mItem.dateInMilliseconds));
     notesText.setText(mItem.notes);
 
     if (mItem.priority != null) {
@@ -92,30 +95,30 @@ public class TodoInputActivity extends AppCompatActivity implements DateChooserD
   }
 
   public void onSetDate(View view) {
+    DateChooserDialogFragment dialogFragment = DateChooserDialogFragment.newInstance(mItem.dateInMilliseconds);
     FragmentManager fm = getSupportFragmentManager();
-    DateChooserDialogFragment editNameDialogFragment = new DateChooserDialogFragment();
-    editNameDialogFragment.show(fm, "fragment_choose_date");
+    dialogFragment.show(fm, "calendar_dialog_fragment");
 
   }
 
   public void saveItem() {
-    if (mItem == null)
-      mItem = new TodoItem();
-
     mItem.title = titleText.getText().toString();
-    mItem.dateInMilliseconds = TDUtil.convertDateToMillis(dateText.getText().toString());
+    if (mItem.title == null || mItem.title.isEmpty()) {
+      AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance("Please fill out the To-Do item.");
+      FragmentManager fm = getSupportFragmentManager();
+      alertDialogFragment.show(fm, "alert_dialog_fragment");
+      return;
+    }
+
+    mItem.dateInMilliseconds = TDUtil.convertDateStringToMillis(dateText.getText().toString());
     mItem.notes = notesText.getText().toString();
     mItem.priority = priorityText.getSelectedItem().toString();
     mItem.status = statusText.getSelectedItem().toString();
 
-    boolean result = TodoManager.getInstance().addItem(mItem);
-    if (result) {
-      Intent intent = new Intent(this, TodoListActivity.class);
-      startActivity(intent);
-    } else {
-      // This should be rare, but for good user experience, display an error message
-      // TODO: Display error message
-    }
+    TodoManager.getInstance().updateItem(mItem);
+
+    Intent intent = new Intent(this, TodoListActivity.class);
+    startActivity(intent);
   }
 
   public void cancelItem() {
@@ -127,7 +130,8 @@ public class TodoInputActivity extends AppCompatActivity implements DateChooserD
     setDateText(dateInMillisecond);
   }
 
-  private void setDateText(long dateInMillisecond){
-    dateText.setText(TDUtil.convertMillisToDate(dateInMillisecond));
+  private void setDateText(long dateInMillisecond) {
+    mItem.dateInMilliseconds = dateInMillisecond;
+    dateText.setText(TDUtil.convertMillisToDateString(dateInMillisecond));
   }
 }

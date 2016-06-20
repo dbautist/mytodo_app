@@ -7,7 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.codepath.todoapplication.model.TodoManager;
 
 /*
-https://www.bignerdranch.com/blog/splash-screens-the-right-way/
+  https://www.bignerdranch.com/blog/splash-screens-the-right-way/
  */
 public class SplashScreenActivity extends AppCompatActivity {
   @Override

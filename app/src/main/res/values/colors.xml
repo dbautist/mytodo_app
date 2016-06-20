@@ -3,4 +3,9 @@
   <color name="colorPrimary">#0393E5</color>
   <color name="colorPrimaryDark">#1976ac</color>
   <color name="colorAccent">#FFA500</color>
+
+  <!-- used for priority text color -->
+  <color name="red">#FF0000</color>
+  <color name="orange">#FFA500</color>
+  <color name="green">#007f00</color>
 </resources>

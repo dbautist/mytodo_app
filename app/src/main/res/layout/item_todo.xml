@@ -20,9 +20,9 @@
       android:layout_height="wrap_content"
       android:layout_alignParentTop="true"
       android:layout_toRightOf="@+id/checkImage"
-      android:textColor="@color/colorPrimaryDark"
       android:text="Title"
       android:textAppearance="?android:attr/textAppearanceLarge"
+      android:textColor="@color/colorPrimaryDark"
       android:textStyle="bold"/>
 
   <TextView
@@ -33,4 +33,16 @@
       android:layout_below="@+id/titleText"
       android:text="June 18, 2016"
       android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+  <TextView
+      android:id="@+id/priorityText"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentEnd="true"
+      android:layout_alignParentRight="true"
+      android:layout_centerVertical="true"
+      android:textAppearance="?android:attr/textAppearanceMedium"
+      android:text="high"
+      android:textAllCaps="true"
+      android:textStyle="bold"/>
 </RelativeLayout>

@@ -29,7 +29,6 @@ public class TodoListActivity extends AppCompatActivity {
   protected void onResume() {
     super.onResume();
 
-    // TODO: need to sort the list
     List<TodoItem> todoItemList = TodoManager.getInstance().getItems();
     final TodoAdapter adapter = new TodoAdapter(this, todoItemList);
     ListView listView = (ListView) findViewById(R.id.todoListView);
@@ -41,7 +40,7 @@ public class TodoListActivity extends AppCompatActivity {
         Log.d(TAG, "Item clicked at position: " + position + " , edit: " + item.title);
 
         TodoManager.getInstance().setSelectedItem(item);
-        gotoItemDetail(item);
+        gotoItemDetails();
       }
     });
     TodoManager.getInstance().setSelectedItem(null);
@@ -52,7 +51,7 @@ public class TodoListActivity extends AppCompatActivity {
     startActivity(intent);
   }
 
-  public void gotoItemDetail(TodoItem item) {
+  public void gotoItemDetails() {
     Intent intent = new Intent(this, TodoDetailsActivity.class);
     startActivity(intent);
   }

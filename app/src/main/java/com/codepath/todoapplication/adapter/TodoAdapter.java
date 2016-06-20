@@ -1,6 +1,7 @@
 package com.codepath.todoapplication.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,7 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
       viewHolder.title = (TextView) view.findViewById(R.id.titleText);
       viewHolder.date = (TextView) view.findViewById(R.id.dateText);
       viewHolder.check = (ImageView) view.findViewById(R.id.checkImage);
+      viewHolder.priority = (TextView) view.findViewById(R.id.priorityText);
       view.setTag(viewHolder);
     }
 
@@ -41,11 +43,22 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
     TodoItem item = getItem(position);
     if (item != null) {
       holder.title.setText(item.title);
-      holder.date.setText(TDUtil.convertMillisToDate(item.dateInMilliseconds));
+      holder.date.setText(TDUtil.convertMillisToDateString(item.dateInMilliseconds));
       if (item.status.toLowerCase().equals("done"))
         holder.check.setVisibility(View.VISIBLE);
       else
         holder.check.setVisibility(View.INVISIBLE);
+
+      String priority = item.priority.toLowerCase();
+      if (priority != null) {
+        holder.priority.setText(item.priority);
+        if (priority.equals("high"))
+          holder.priority.setTextColor(view.getResources().getColor(R.color.red));
+        else if (priority.equals("medium"))
+          holder.priority.setTextColor(view.getResources().getColor(R.color.orange));
+        else
+          holder.priority.setTextColor(view.getResources().getColor(R.color.green));
+      }
     }
 
     return view;
@@ -54,6 +67,7 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
   private static class ViewHolder {
     TextView title;
     TextView date;
+    TextView priority;
     ImageView check;
   }
 }

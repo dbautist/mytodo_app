@@ -1,60 +1,62 @@
 package com.codepath.todoapplication.fragment;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CalendarView;
+import android.widget.DatePicker;
 
-import com.codepath.todoapplication.R;
 import com.codepath.todoapplication.utils.TDUtil;
+
+import java.util.Calendar;
 
 /*
     Reference: http://guides.codepath.com/android/Using-DialogFragment
  */
-public class DateChooserDialogFragment extends DialogFragment {
-  private CalendarView mCalendarView;
-  private Button mOkButton, mCancelButton;
+public class DateChooserDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
   public interface DateChooserListener {
     void onFinishDateChooserDialog(long dateInMillisecond);
   }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                           Bundle savedInstanceState) {
-    return inflater.inflate(R.layout.fragment_calendar, container);
+  public static DateChooserDialogFragment newInstance(long dateInMilliseconds) {
+    DateChooserDialogFragment frag = new DateChooserDialogFragment();
+    Bundle args = new Bundle();
+    args.putLong("DateInMilliseconds", dateInMilliseconds);
+    frag.setArguments(args);
+    return frag;
   }
 
   @Override
-  public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
-    mCalendarView = (CalendarView) view.findViewById(R.id.calendarView);
-    mCalendarView.setMinDate(TDUtil.getCurrentDateInMillis());
-    mOkButton = (Button) view.findViewById(R.id.okButton);
-    mOkButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        setDate();
+  public Dialog onCreateDialog(Bundle savedInstanceState) {
+    // Use the current date as the default date in the picker
+    final Calendar c = Calendar.getInstance();
+    if (getArguments() != null) {
+      long dateInMilliseconds = getArguments().getLong("DateInMilliseconds");
+      if (dateInMilliseconds != 0L) {
+        // Set to params
+        c.setTimeInMillis(dateInMilliseconds);
       }
-    });
-    mCancelButton = (Button) view.findViewById(R.id.cancelButton);
-    mCancelButton.setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        dismiss();
-      }
-    });
+    }
+
+    int year = c.get(Calendar.YEAR);
+    int month = c.get(Calendar.MONTH);
+    int day = c.get(Calendar.DAY_OF_MONTH);
+
+    // Create a new instance of DatePickerDialog and return it
+    DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, year, month, day);
+    datePickerDialog.getDatePicker().setMinDate(TDUtil.getCurrentDateInMillis() - 1000);
+    return datePickerDialog;
   }
 
-  private void setDate() {
+  public void onDateSet(DatePicker view, int year, int month, int day) {
+    Calendar c = Calendar.getInstance();
+    c.set(year, month, day);
+
+    // Do something with the date chosen by the user
     DateChooserListener listener = (DateChooserListener) getActivity();
     if (listener != null) {
-      listener.onFinishDateChooserDialog(mCalendarView.getDate());
-      dismiss();
+      listener.onFinishDateChooserDialog(c.getTimeInMillis());
     }
   }
 }

@@ -10,7 +10,7 @@ import java.util.Date;
 public class TDUtil {
   public static final String DATE_FORMATTER = "MMMM dd, yyyy";
 
-  public static long convertDateToMillis(String formattedDate) {
+  public static long convertDateStringToMillis(String formattedDate) {
     try {
       SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMATTER);
       Date date = sdf.parse(formattedDate);
@@ -21,7 +21,7 @@ public class TDUtil {
     }
   }
 
-  public static String convertMillisToDate(long milliseconds) {
+  public static String convertMillisToDateString(long milliseconds) {
     return DateFormat.format(DATE_FORMATTER, new Date(milliseconds)).toString();
   }
 

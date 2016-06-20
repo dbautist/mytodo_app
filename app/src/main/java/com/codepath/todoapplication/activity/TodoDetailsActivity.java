@@ -3,6 +3,7 @@ package com.codepath.todoapplication.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -11,11 +12,12 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.codepath.todoapplication.R;
+import com.codepath.todoapplication.fragment.AlertDialogFragment;
 import com.codepath.todoapplication.model.TodoItem;
 import com.codepath.todoapplication.model.TodoManager;
 import com.codepath.todoapplication.utils.TDUtil;
 
-public class TodoDetailsActivity extends AppCompatActivity {
+public class TodoDetailsActivity extends AppCompatActivity implements AlertDialogFragment.AlertDialogListener {
   private static final String TAG = "DETAILS";
   private TodoItem mItem;
 
@@ -54,7 +56,7 @@ public class TodoDetailsActivity extends AppCompatActivity {
 
   private void populateDetails(TodoItem item) {
     ((TextView) findViewById(R.id.titleText)).setText(item.title);
-    ((TextView) findViewById(R.id.dateText)).setText(TDUtil.convertMillisToDate(item.dateInMilliseconds));
+    ((TextView) findViewById(R.id.dateText)).setText(TDUtil.convertMillisToDateString(item.dateInMilliseconds));
     ((TextView) findViewById(R.id.notesText)).setText(item.notes);
     ((TextView) findViewById(R.id.priorityText)).setText(item.priority);
     ((TextView) findViewById(R.id.statusText)).setText(item.status);
@@ -66,27 +68,15 @@ public class TodoDetailsActivity extends AppCompatActivity {
   }
 
   public void deleteItem() {
-    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-        this);
 
-    alertDialogBuilder
-        .setMessage("Are you sure you want to delete this item?")
-        .setCancelable(false)
-        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int id) {
-            TodoManager.getInstance().removeItem(mItem);
-            TodoDetailsActivity.this.finish();
-          }
-        })
-        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-          public void onClick(DialogInterface dialog, int id) {
-            // if this button is clicked, just close
-            // the dialog box and do nothing
-            dialog.cancel();
-          }
-        });
+    AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance("Are you sure you want to delete this item?");
+    FragmentManager fm = getSupportFragmentManager();
+    alertDialogFragment.show(fm, "alert_dialog_fragment");
+  }
 
-    AlertDialog alertDialog = alertDialogBuilder.create();
-    alertDialog.show();
+  @Override
+  public void onPositiveButtonSelected() {
+    TodoManager.getInstance().removeItem(mItem);
+    TodoDetailsActivity.this.finish();
   }
 }

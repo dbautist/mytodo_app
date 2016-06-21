@@ -25,6 +25,7 @@ The following **optional** features are implemented:
 The following **additional** features are implemented:
 
 * [x] Add a `splash_screen` that fetches the list of items from the database before the `TodoListActivity` is loaded
+* [x] Sort todo items by date
 * [x] Add support for showing a "check mark" when a todo item is marked as "Done"
 * [x] Wrap the `DatePickerDialog` and `AlertDialog` in a `DialogFragment` to make them more re-usable
 

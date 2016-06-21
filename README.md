@@ -24,8 +24,9 @@ The following **optional** features are implemented:
 
 The following **additional** features are implemented:
 
-* [x] Added a `splash_screen` that fetches the list of items from the database before the `TodoListActivity` is loaded.
-* [x] Wrapped the `DatePickerDialog` and `AlertDialog` in a `DialogFragment` to make them more re-usable.
+* [x] Add a `splash_screen` that fetches the list of items from the database before the `TodoListActivity` is loaded
+* [x] Add support for showing a "check mark" when a todo item is marked as "Done"
+* [x] Wrap the `DatePickerDialog` and `AlertDialog` in a `DialogFragment` to make them more re-usable
 
 ## Video Walkthrough 
 

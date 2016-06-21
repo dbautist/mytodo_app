@@ -4,8 +4,11 @@ import com.activeandroid.query.Select;
 
 import java.util.List;
 
+/**
+ * This class manages the persistent state of TodoItem
+ *
+ */
 public class TodoManager {
-  private static final String TAG = TodoManager.class.getSimpleName();
   private static TodoManager mInstance;
   private List<TodoItem> mItemList;
   private TodoItem mSelectedItem;
@@ -39,6 +42,11 @@ public class TodoManager {
     return mItemList;
   }
 
+  /**
+   * Add or update the given TodItem in the db.
+   *
+   * @param item
+   */
   public void updateItem(TodoItem item) {
     if (item != null) {
       item.save();
@@ -46,6 +54,11 @@ public class TodoManager {
     }
   }
 
+  /**
+   * Delete the given TodoItem from the db.
+   *
+   * @param item
+   */
   public void removeItem(TodoItem item) {
     if (item != null) {
       item.delete();

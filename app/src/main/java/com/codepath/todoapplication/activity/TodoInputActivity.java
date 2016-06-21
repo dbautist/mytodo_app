@@ -21,9 +21,9 @@ import com.codepath.todoapplication.model.TodoManager;
 import com.codepath.todoapplication.utils.TDUtil;
 
 public class TodoInputActivity extends AppCompatActivity implements DateChooserDialogFragment.DateChooserListener {
-  private EditText titleText, notesText;
-  private Spinner priorityText, statusText;
-  private TextView dateText;
+  private EditText mTitleText, mNotesText;
+  private Spinner mPriorityText, mStatusText;
+  private TextView mDateText;
   private ArrayAdapter<CharSequence> mStatusAdapter, mPriorityAdapter;
   private TodoItem mItem;
 
@@ -31,29 +31,30 @@ public class TodoInputActivity extends AppCompatActivity implements DateChooserD
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_input);
-
-    titleText = (EditText) findViewById(R.id.titleText);
-    dateText = (TextView) findViewById(R.id.dateText);
-    notesText = (EditText) findViewById(R.id.notesText);
-    priorityText = (Spinner) findViewById(R.id.priorityText);
-    mPriorityAdapter = ArrayAdapter.createFromResource(this, R.array.priority_array, android.R.layout.simple_spinner_item);
-    mPriorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    priorityText.setAdapter(mPriorityAdapter);
-
-    statusText = (Spinner) findViewById(R.id.statusText);
-    mStatusAdapter = ArrayAdapter.createFromResource(this, R.array.status_array, android.R.layout.simple_spinner_item);
-    mStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    statusText.setAdapter(mStatusAdapter);
+    initView();
 
     mItem = TodoManager.getInstance().getSelectedItem();
     if (mItem != null) {
       populateItem();
     } else {
       mItem = new TodoItem();
+      setDateText(TDUtil.getCurrentDateInMillis());
     }
+  }
 
-    // init date text
-    setDateText(TDUtil.getCurrentDateInMillis());
+  private void initView() {
+    mTitleText = (EditText) findViewById(R.id.titleText);
+    mDateText = (TextView) findViewById(R.id.dateText);
+    mNotesText = (EditText) findViewById(R.id.notesText);
+    mPriorityText = (Spinner) findViewById(R.id.priorityText);
+    mPriorityAdapter = ArrayAdapter.createFromResource(this, R.array.priority_array, android.R.layout.simple_spinner_item);
+    mPriorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    mPriorityText.setAdapter(mPriorityAdapter);
+
+    mStatusText = (Spinner) findViewById(R.id.statusText);
+    mStatusAdapter = ArrayAdapter.createFromResource(this, R.array.status_array, android.R.layout.simple_spinner_item);
+    mStatusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    mStatusText.setAdapter(mStatusAdapter);
   }
 
   @Override
@@ -79,18 +80,18 @@ public class TodoInputActivity extends AppCompatActivity implements DateChooserD
   }
 
   private void populateItem() {
-    titleText.setText(mItem.title);
-    dateText.setText(TDUtil.convertMillisToDateString(mItem.dateInMilliseconds));
-    notesText.setText(mItem.notes);
+    mTitleText.setText(mItem.title);
+    mDateText.setText(TDUtil.convertMillisToDateString(mItem.dateInMilliseconds));
+    mNotesText.setText(mItem.notes);
 
     if (mItem.priority != null) {
       int priorityPos = mPriorityAdapter.getPosition(mItem.priority);
-      priorityText.setSelection(priorityPos);
+      mPriorityText.setSelection(priorityPos);
     }
 
     if (mItem.status != null) {
       int statusPos = mStatusAdapter.getPosition(mItem.status);
-      statusText.setSelection(statusPos);
+      mStatusText.setSelection(statusPos);
     }
   }
 
@@ -102,18 +103,18 @@ public class TodoInputActivity extends AppCompatActivity implements DateChooserD
   }
 
   public void saveItem() {
-    mItem.title = titleText.getText().toString();
+    mItem.title = mTitleText.getText().toString();
     if (mItem.title == null || mItem.title.isEmpty()) {
-      AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance("Please fill out the To-Do item.");
+      AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(getString(R.string.save_prompt));
       FragmentManager fm = getSupportFragmentManager();
       alertDialogFragment.show(fm, "alert_dialog_fragment");
       return;
     }
 
-    mItem.dateInMilliseconds = TDUtil.convertDateStringToMillis(dateText.getText().toString());
-    mItem.notes = notesText.getText().toString();
-    mItem.priority = priorityText.getSelectedItem().toString();
-    mItem.status = statusText.getSelectedItem().toString();
+    mItem.dateInMilliseconds = TDUtil.convertDateStringToMillis(mDateText.getText().toString());
+    mItem.notes = mNotesText.getText().toString();
+    mItem.priority = mPriorityText.getSelectedItem().toString();
+    mItem.status = mStatusText.getSelectedItem().toString();
 
     TodoManager.getInstance().updateItem(mItem);
 
@@ -132,6 +133,6 @@ public class TodoInputActivity extends AppCompatActivity implements DateChooserD
 
   private void setDateText(long dateInMillisecond) {
     mItem.dateInMilliseconds = dateInMillisecond;
-    dateText.setText(TDUtil.convertMillisToDateString(dateInMillisecond));
+    mDateText.setText(TDUtil.convertMillisToDateString(dateInMillisecond));
   }
 }

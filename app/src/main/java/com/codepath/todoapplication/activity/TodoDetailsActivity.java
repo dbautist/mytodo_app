@@ -1,10 +1,8 @@
 package com.codepath.todoapplication.activity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +26,7 @@ public class TodoDetailsActivity extends AppCompatActivity implements AlertDialo
 
     mItem = TodoManager.getInstance().getSelectedItem();
     if (mItem != null) {
-      populateDetails(mItem);
+      populateDetailsView(mItem);
     }
   }
 
@@ -54,7 +52,7 @@ public class TodoDetailsActivity extends AppCompatActivity implements AlertDialo
     }
   }
 
-  private void populateDetails(TodoItem item) {
+  private void populateDetailsView(TodoItem item) {
     ((TextView) findViewById(R.id.titleText)).setText(item.title);
     ((TextView) findViewById(R.id.dateText)).setText(TDUtil.convertMillisToDateString(item.dateInMilliseconds));
     ((TextView) findViewById(R.id.notesText)).setText(item.notes);
@@ -68,15 +66,15 @@ public class TodoDetailsActivity extends AppCompatActivity implements AlertDialo
   }
 
   public void deleteItem() {
-
-    AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance("Are you sure you want to delete this item?");
+    AlertDialogFragment alertDialogFragment = AlertDialogFragment.newInstance(getString(R.string.delete_prompt));
     FragmentManager fm = getSupportFragmentManager();
     alertDialogFragment.show(fm, "alert_dialog_fragment");
   }
 
   @Override
   public void onPositiveButtonSelected() {
+    // delete from the db
     TodoManager.getInstance().removeItem(mItem);
-    TodoDetailsActivity.this.finish();
+    finish();
   }
 }

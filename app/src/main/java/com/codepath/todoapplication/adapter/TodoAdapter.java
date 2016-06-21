@@ -1,7 +1,6 @@
 package com.codepath.todoapplication.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +55,7 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
           holder.priority.setTextColor(view.getResources().getColor(R.color.red));
         else if (priority.equals("medium"))
           holder.priority.setTextColor(view.getResources().getColor(R.color.orange));
-        else
+        else if (priority.equals("low"))
           holder.priority.setTextColor(view.getResources().getColor(R.color.green));
       }
     }

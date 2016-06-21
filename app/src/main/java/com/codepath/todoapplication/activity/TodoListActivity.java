@@ -23,6 +23,9 @@ public class TodoListActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_list);
+
+    getSupportActionBar().setDisplayShowHomeEnabled(true);
+    getSupportActionBar().setIcon(R.mipmap.ic_launcher);
   }
 
   @Override

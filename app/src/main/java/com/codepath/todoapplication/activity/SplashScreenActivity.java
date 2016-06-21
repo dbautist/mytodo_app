@@ -14,7 +14,7 @@ public class SplashScreenActivity extends AppCompatActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // Initialize the list of to-dos
+    // Fetch our list of to-do from the DB
     TodoManager.getInstance().init();
 
     Intent intent = new Intent(this, TodoListActivity.class);

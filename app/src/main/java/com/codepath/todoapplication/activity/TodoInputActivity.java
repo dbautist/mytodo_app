@@ -81,6 +81,8 @@ public class TodoInputActivity extends AppCompatActivity implements DateChooserD
 
   private void populateItem() {
     mTitleText.setText(mItem.title);
+    // set cursor to the end of the text
+    mTitleText.setSelection(mTitleText.getText().length());
     mDateText.setText(TDUtil.convertMillisToDateString(mItem.dateInMilliseconds));
     mNotesText.setText(mItem.notes);
 

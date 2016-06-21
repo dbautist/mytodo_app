@@ -37,7 +37,8 @@
     <activity
         android:name=".activity.TodoInputActivity"
         android:label=""
-        android:parentActivityName=".activity.TodoListActivity">
+        android:parentActivityName=".activity.TodoListActivity"
+        android:windowSoftInputMode="adjustResize">
       <!-- Parent activity meta-data to support 4.0 and lower -->
       <meta-data
           android:name="android.support.PARENT_ACTIVITY"
